@@ -10,14 +10,6 @@ const app = new Hono().basePath('/api')
 
 // app.route('/accounts', accounts)
 
-app.onError((err, c) => {
-    if(err instanceof HTTPException){
-        return err.getResponse()
-    }
-
-    return c.json({ error: "Internal Error" }, 500) // for any uncaught errors we have a standardized response
-})
-
 const routes = app
     .route('/accounts', accounts)
 
