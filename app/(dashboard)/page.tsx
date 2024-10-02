@@ -1,9 +1,12 @@
 'use client'
 
+import { Button } from "@/components/ui/button"
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts"
+import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts"
 
 export default function Home() {
     const { data, isLoading } = useGetAccounts() // data since that is what we return from the api/[[...routes]]/accounts.ts
+    const { onOpen } = useNewAccount()
 
     if(isLoading){
         return (
@@ -20,6 +23,7 @@ export default function Home() {
                     </div>
                 ))}
             </div>
+            <Button onClick={onOpen}>Add an account</Button>
         </>
     )
 }
