@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from './ui/button';
 import { Input } from "./ui/input";
 import { Trash } from "lucide-react";
+import { useConfirm } from "@/hooks/use-confirm";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[],
@@ -19,9 +20,12 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({ columns, data, filterKey, onDelete, disabled }: DataTableProps<TData, TValue>) {
     
+    const [ConfirmDialog, confirm] = useConfirm('Are you sure?', 'You are about to perform a bulk delete.')
+    
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = React.useState({})
+
 
     const table = useReactTable({
 		data,
@@ -42,6 +46,7 @@ export function DataTable<TData, TValue>({ columns, data, filterKey, onDelete, d
 
 	return (
         <div>
+            <ConfirmDialog />
              <div className="flex items-center py-4">
                 <Input
                     placeholder={`Filter ${filterKey}...`}
@@ -57,9 +62,12 @@ export function DataTable<TData, TValue>({ columns, data, filterKey, onDelete, d
                         variant="outline"
                         disabled={disabled}
                         className="ml-auto text-xs font-normal"
-                        onClick={()=>{
-                            onDelete(table.getFilteredRowModel().rows)
-                            table.resetRowSelection()
+                        onClick={async () => {
+                            const ok = await confirm()
+                            if(ok){
+                                onDelete(table.getFilteredRowModel().rows)
+                                table.resetRowSelection()
+                            }
                         }}
                     >
                         <Trash className="mr-2 size-4" />
