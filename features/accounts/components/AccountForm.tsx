@@ -75,7 +75,7 @@ export const AccountForm = ({ id, defaultValues, onSubmit, onDelete, disabled }:
 						className="w-full"
 						variant="outline"
 					>
-						<Trash className="mr-2 size-4" />&nbsp&nbsp&nbspDelete account                        
+						<Trash className="mr-2 size-4"/>Delete account                        
 					</Button>
 				)}
 			</form>

@@ -8,6 +8,7 @@ import { ArrowUpDown } from "lucide-react"
 
 import { InferResponseType } from 'hono'
 import { client } from "@/lib/hono"
+import { Action } from "./actions"
 
 export type ResponseType = InferResponseType<typeof client.api.accounts.$get, 200>['data'][0] // hence we should write the status codes in hono error
 
@@ -48,4 +49,8 @@ export const columns: ColumnDef<ResponseType>[] = [
         )
       },
   },
+  {
+    id: 'actions',
+    cell: ({ row }) => <Action id={row.original.id}/>
+  }
 ]
