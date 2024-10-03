@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable } from '@tanstack/react-table';
+import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, Row, SortingState, useReactTable } from '@tanstack/react-table';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from './ui/button';
@@ -10,12 +10,14 @@ import { Input } from "./ui/input";
 import { Trash } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
-	columns: ColumnDef<TData, TValue>[];
-	data: TData[];
-    filterKey: string
+	columns: ColumnDef<TData, TValue>[],
+	data: TData[],
+    filterKey: string,
+    onDelete: (rows: Row<TData>[]) => void,
+    disabled?: boolean,
 }
 
-export function DataTable<TData, TValue>({ columns, data, filterKey }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, filterKey, onDelete, disabled }: DataTableProps<TData, TValue>) {
     
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -53,6 +55,7 @@ export function DataTable<TData, TValue>({ columns, data, filterKey }: DataTable
                     <Button
                         size="sm"
                         variant="outline"
+                        disabled={disabled}
                         className="ml-auto text-xs font-normal"
                     >
                         <Trash className="mr-2 size-4" />

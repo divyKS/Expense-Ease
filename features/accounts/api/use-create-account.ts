@@ -17,7 +17,7 @@ export const useCreateAccount = () => {
     },
     onSuccess: () => {
       toast.success("Account created.")
-      queryClient.invalidateQueries({ queryKey: ["accounts"] })
+      queryClient.invalidateQueries({ queryKey: ["accounts"] }) // because of this the use-get-accounts hook re-fetches every time we create an account
     },
     onError: () => {
       toast.error("Failed to create account.")
