@@ -8,12 +8,16 @@ import { columns } from "./columns"
 import { DataTable } from "@/components/DataTable"
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete"
 
 
 const AccountsPage = () => {
     const newAccount = useNewAccount()
     const accountQuery = useGetAccounts()
+    const deleteAccounts = useBulkDeleteAccounts()
     const accounts = accountQuery.data || []
+
+    const isDisabled = accountQuery.isLoading || deleteAccounts.isPending
 
     if(accountQuery.isLoading){
         return (
@@ -42,7 +46,16 @@ const AccountsPage = () => {
                     </Button>
                 </CardHeader>
                 <CardContent>
-                    <DataTable columns={columns} data={accounts} filterKey="email" onDelete={()=>{}} disabled={true}/>
+                    <DataTable
+                        columns={columns}
+                        data={accounts}
+                        filterKey="account"
+                        disabled={isDisabled}
+                        onDelete={(row) => {
+                            const ids = row.map((r) => r.original.id)
+                            deleteAccounts.mutate({ids})
+                        }}
+                    />
                 </CardContent>
             </Card>
         </div>
