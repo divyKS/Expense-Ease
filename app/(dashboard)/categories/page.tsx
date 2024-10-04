@@ -49,7 +49,7 @@ const CategoriesPage = () => {
                     <DataTable
                         columns={columns}
                         data={categories}
-                        filterKey="categories"
+                        filterKey="name"
                         disabled={isDisabled}
                         onDelete={(row) => {
                             const ids = row.map((r) => r.original.id)
