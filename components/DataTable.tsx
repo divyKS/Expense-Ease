@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({ columns, data, filterKey, onDelete, d
                     placeholder={`Filter ${filterKey}...`}
                     value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn(filterKey)?.setFilterValue(event.target.value)
+                      table.getColumn(filterKey)?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({ columns, data, filterKey, onDelete, d
                         onClick={async () => {
                             const ok = await confirm()
                             if(ok){
-                                onDelete(table.getFilteredRowModel().rows)
+                                onDelete(table.getFilteredSelectedRowModel().rows)
                                 table.resetRowSelection()
                             }
                         }}

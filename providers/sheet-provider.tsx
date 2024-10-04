@@ -2,6 +2,8 @@
 
 import { EditAccountSheet } from "@/features/accounts/components/edit-account-sheet"
 import { NewAccountSheet } from "@/features/accounts/components/NewAccountSheet"
+import { EditCategorySheet } from "@/features/categories/components/edit-category-sheet"
+import { NewCategorySheet } from "@/features/categories/components/NewCategorySheet"
 import { useMountedState } from "react-use"
 
 export const SheetProvider = () => {
@@ -16,6 +18,9 @@ export const SheetProvider = () => {
         <>
             <NewAccountSheet />
             <EditAccountSheet />
+            
+            <NewCategorySheet />
+            <EditCategorySheet />
         </>
     )
 }

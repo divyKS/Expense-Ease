@@ -2,24 +2,24 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts"
 import { Loader2, Plus } from "lucide-react"
 import { columns } from "./columns"
 import { DataTable } from "@/components/DataTable"
-import { useGetAccounts } from "@/features/accounts/api/use-get-accounts"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts"
+import { useNewCategory } from "@/features/categories/hooks/use-new-category"
+import { useGetCategories } from "@/features/categories/api/use-get-categories"
+import { useBulkDeleteCategories } from "@/features/categories/api/use-bulk-delete-categories"
 
 
-const AccountsPage = () => {
-    const newAccount = useNewAccount()
-    const accountQuery = useGetAccounts()
-    const deleteAccounts = useBulkDeleteAccounts()
-    const accounts = accountQuery.data || []
+const CategoriesPage = () => {
+    const newCategory = useNewCategory()
+    const categoriesQuery = useGetCategories()
+    const deleteCategories = useBulkDeleteCategories()
+    const categories = categoriesQuery.data || []
 
-    const isDisabled = accountQuery.isLoading || deleteAccounts.isPending
+    const isDisabled = categoriesQuery.isLoading || deleteCategories.isPending
 
-    if(accountQuery.isLoading){
+    if(categoriesQuery.isLoading){
         return (
             <div className="mx-auto max-w-screen-2xl w-full  -mt-6 pb-10">
                 <Card className="border-none drop-shadow-sm">
@@ -40,20 +40,20 @@ const AccountsPage = () => {
         <div className="mx-auto max-w-screen-2xl w-full  -mt-6 pb-10"> {/* mx-auto max-w-screen-2xl so that on too large screen we stay in middle*/}
             <Card className="border-none drop-shadow-sm">
                 <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
-                    <CardTitle className="line-clamp-1 text-xl">Accounts Page</CardTitle>
-                    <Button size="sm" onClick={newAccount.onOpen}>
+                    <CardTitle className="line-clamp-1 text-xl">Categories Page</CardTitle>
+                    <Button size="sm" onClick={newCategory.onOpen}>
                         <Plus className="mr-2 size-4" /> Add new
                     </Button>
                 </CardHeader>
                 <CardContent>
                     <DataTable
                         columns={columns}
-                        data={accounts}
-                        filterKey="accounts"
+                        data={categories}
+                        filterKey="categories"
                         disabled={isDisabled}
                         onDelete={(row) => {
                             const ids = row.map((r) => r.original.id)
-                            deleteAccounts.mutate({ids})
+                            deleteCategories.mutate({ids})
                         }}
                     />
                 </CardContent>
@@ -62,4 +62,4 @@ const AccountsPage = () => {
     )
 }
 
-export default AccountsPage
+export default CategoriesPage
