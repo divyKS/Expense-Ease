@@ -21,6 +21,7 @@ import { Select } from '@/components/Select';
 import { DatePicker } from '@/components/DatePicker';
 import { Textarea } from '@/components/ui/textarea';
 import { AmountInput } from '@/components/AmountInput';
+import { convertAmountToMilliunits } from '@/lib/utils';
 // import { convertAmountToMilliunits } from '@/lib/utils';
 
 const formSchema = z.object({
@@ -69,14 +70,14 @@ export const TransactionForm = ({
 	});
 
 	const handleSubmit = (values: FormValues) => {
-        console.log(values);
-		// const amount = parseFloat(values.amount);
-		// const amountInMilliunits = convertAmountToMilliunits(amount);
+        // console.log(values);
+		const amount = parseFloat(values.amount);
+		const amountInMilliunits = convertAmountToMilliunits(amount);
 
-		// onSubmit({
-		// 	...values,
-		// 	amount: amountInMilliunits,
-		// });
+		onSubmit({
+			...values,
+			amount: amountInMilliunits,
+		});
 	};
 
 	const handleDelete = () => {
