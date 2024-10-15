@@ -19,6 +19,8 @@ import { Input } from '@/components/ui/input';
 import { insertTransactionSchema } from '@/db/schema';
 import { Select } from '@/components/Select';
 import { DatePicker } from '@/components/DatePicker';
+import { Textarea } from '@/components/ui/textarea';
+import { AmountInput } from '@/components/AmountInput';
 // import { convertAmountToMilliunits } from '@/lib/utils';
 
 const formSchema = z.object({
@@ -156,7 +158,7 @@ export const TransactionForm = ({
 					)}
 				/>
 
-				{/* <FormField
+				<FormField
 					name="payee"
 					control={form.control}
 					disabled={disabled}
@@ -175,9 +177,9 @@ export const TransactionForm = ({
 							<FormMessage />
 						</FormItem>
 					)}
-				/> */}
+				/>
 
-				{/* <FormField
+				<FormField
 					name="amount"
 					control={form.control}
 					disabled={disabled}
@@ -196,9 +198,9 @@ export const TransactionForm = ({
 							<FormMessage />
 						</FormItem>
 					)}
-				/> */}
+				/>
 
-				{/* <FormField
+				<FormField
 					name="notes"
 					control={form.control}
 					disabled={disabled}
@@ -218,7 +220,7 @@ export const TransactionForm = ({
 							<FormMessage />
 						</FormItem>
 					)}
-				/> */}
+				/>
 
 				<Button className="w-full" disabled={disabled}>
 					{id ? 'Save changes' : 'Create transaction'}
