@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts"
 import { Loader2, Plus } from "lucide-react"
 import { DataTable } from "@/components/DataTable"
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts"
