@@ -11,6 +11,7 @@ import { useGetTransactions } from "@/features/transactions/api/use-get-transact
 import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions"
 import { useState } from "react"
 import { UploadButton } from "./upload-button"
+import { ImportCard } from "./import-card"
 
 enum VARIANTS {
     LIST = "LIST",
@@ -36,6 +37,7 @@ const TransactionsPage = () => {
     const isDisabled = transactionQuery.isLoading || deleteTransactions.isPending
 
     const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
+        console.log(results) // a matrix of string[][] with data, error, meta field - papaparse thing
         setImportResults(results)
         setVariant(VARIANTS.IMPORT)
     }
@@ -65,7 +67,12 @@ const TransactionsPage = () => {
     if (variant === VARIANTS.IMPORT) {
         return (
             <>
-                <div>IMPORT SCREEN</div>
+                {/* <AccountDialog />     */}
+                <ImportCard
+                  data={importResults.data}
+                  onCancel={onCancelImport}
+                  onSubmit={() => {}}
+                />
             </>
         )
     }
