@@ -1,56 +1,71 @@
-import { z } from 'zod'
+import { Loader2 } from 'lucide-react';
+import { z } from 'zod';
 
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, } from '@/components/ui/sheet'
-import { insertAccountSchema } from '@/db/schema'
-import { AccountForm } from './AccountForm'
-import { useOpenAccount } from '../hooks/use-open-account'
-import { useGetAccount } from '../api/use-get-account'
-import { Loader2 } from 'lucide-react'
-import { useEditAccount } from '../api/use-edit-account'
-import { useDeleteAccount } from '../api/use-delete-account'
-import { useConfirm } from '@/hooks/use-confirm'
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+} from '@/components/ui/sheet';
+import { insertAccountSchema } from '@/db/schema';
+import { useDeleteAccount } from '@/features/accounts/api/use-delete-account';
+import { useEditAccount } from '@/features/accounts/api/use-edit-account';
+import { useGetAccount } from '@/features/accounts/api/use-get-account';
+import { useOpenAccount } from '@/features/accounts/hooks/use-open-account';
+import { useConfirm } from '@/hooks/use-confirm';
+import { AccountForm } from './AccountForm';
+
 
 const formSchema = insertAccountSchema.pick({
 	name: true,
-})
+});
 
-type FormValues = z.infer<typeof formSchema>
+type FormValues = z.infer<typeof formSchema>;
 
 export const EditAccountSheet = () => {
-	const { isOpen, onClose, id } = useOpenAccount()
+	const { isOpen, onClose, id } = useOpenAccount();
 
-	const accountQuery = useGetAccount(id)
+	const [ConfirmDialog, confirm] = useConfirm(
+		'Are you sure?',
+		'You are about to delete this account.'
+	);
 
-	const isLoading = accountQuery.isLoading
+	const accountQuery = useGetAccount(id);
+	const editMutation = useEditAccount(id);
+	const deleteMutation = useDeleteAccount(id);
 
-	const editMutation = useEditAccount(id)
-	
-	const deleteMutation = 	useDeleteAccount(id)
+	const isPending = editMutation.isPending || deleteMutation.isPending;
 
-	const [ConfirmDialog, confirm] = useConfirm('Are you sure?', 'You are about to delete this account')
-	
-	const isPending = editMutation.isPending || deleteMutation.isPending // so that user can not spam api requests after one request
-
-	const onDelete = async () => {
-		const ok = await confirm()
-		if(ok){
-			deleteMutation.mutate(undefined, {
-				onSuccess: () => {
-					onClose()
-				}
-			})
-		}
-	}
+	const isLoading = accountQuery.isLoading;
 
 	const onSubmit = (values: FormValues) => {
 		editMutation.mutate(values, {
 			onSuccess: () => {
-				onClose()
+				onClose();
 			},
-		})
-	}
+		});
+	};
 
-	const defaultValues = accountQuery.data ? { name: accountQuery.data.name } : { name: "" }
+	const defaultValues = accountQuery.data
+		? {
+				name: accountQuery.data.name,
+		  }
+		: {
+				name: '',
+		  };
+
+	const onDelete = async () => {
+		const ok = await confirm();
+
+		if (ok) {
+			deleteMutation.mutate(undefined, {
+				onSuccess: () => {
+					onClose();
+				},
+			});
+		}
+	};
 
 	return (
 		<>
@@ -61,13 +76,13 @@ export const EditAccountSheet = () => {
 						<SheetTitle>Edit Account</SheetTitle>
 
 						<SheetDescription>
-							Edit an existing account
+							Edit an existing account.
 						</SheetDescription>
 					</SheetHeader>
 
 					{isLoading ? (
-						<div className='absolute inset-0 flex items-center justify-center'>
-							<Loader2 className='size-4 animate-spin text-muted-foreground'/>
+						<div className="absolute inset-0 flex items-center justify-center">
+							<Loader2 className="size-4 animate-spin text-muted-foreground" />
 						</div>
 					) : (
 						<AccountForm
@@ -75,12 +90,11 @@ export const EditAccountSheet = () => {
 							defaultValues={defaultValues}
 							onSubmit={onSubmit}
 							disabled={isPending}
-							// onDelete={() => deleteMutation.mutate()}
 							onDelete={onDelete}
 						/>
 					)}
 				</SheetContent>
 			</Sheet>
 		</>
-	)
-}
+	);
+};
