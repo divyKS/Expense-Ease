@@ -12,6 +12,7 @@ import { Action } from "./actions"
 import { format } from "date-fns"
 import { formatCurrency } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { AccountColumn } from "./account-column"
 
 export type ResponseType = InferResponseType<typeof client.api.transactions.$get, 200>['data'][0]
 
@@ -139,16 +140,11 @@ export const columns: ColumnDef<ResponseType>[] = [
     },
     cell: ({ row }) => {
       return (
-        <span>
-          {row.original.account}
-        </span>
+        <AccountColumn
+          account={row.original.account}
+          accountId={row.original.accountId}          
+        />
       )
-      // return (
-      //   <AccountColumn
-      //     account={row.original.account}
-      //     accountId={row.original.accountId}
-      //   />
-      // );
     },
   },
   {
