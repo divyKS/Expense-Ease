@@ -50,7 +50,7 @@ export const ImportCard = ({ data, onCancel, onSubmit }: ImportCardProps) => {
 		})
 	}
 
-	// const progress = Object.values(selectedColumns).filter(Boolean).length
+	const progress = Object.values(selectedColumns).filter(Boolean).length
 
 	// const handleContinue = () => {
 	// 	const getColumnIndex = (column: string) => {
@@ -124,13 +124,12 @@ export const ImportCard = ({ data, onCancel, onSubmit }: ImportCardProps) => {
 
 						<Button
 							size="sm"
-							disabled={true}
-							// disabled={progress < requiredOptions.length}
+							disabled={progress < requiredOptions.length}
 							// onClick={handleContinue}
 							onClick={()=>{}}
 							className="w-full lg:w-auto"
 						>
-							{/* Continue ({progress}/{requiredOptions.length}) */}
+							Continue ({progress}/{requiredOptions.length})
 						</Button>
 					</div>
 				</CardHeader>
