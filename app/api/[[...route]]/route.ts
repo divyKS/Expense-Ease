@@ -4,6 +4,7 @@ import { handle } from 'hono/vercel'
 import accounts from './accounts'
 import categories from './categories'
 import transactions from './transactions'
+import summary from './summary'
 import { HTTPException } from 'hono/http-exception'
 
 export const runtime = 'edge'
@@ -16,6 +17,7 @@ const routes = app
     .route('/accounts', accounts)
     .route('/categories', categories)
     .route('/transactions', transactions)
+    .route('/summary', summary)
 
 // app.get('/',  (c) => ( c.json({ message: "Root API Endpoint" }) ))
 // app.get(
