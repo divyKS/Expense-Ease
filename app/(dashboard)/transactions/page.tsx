@@ -15,6 +15,7 @@ import { ImportCard } from "./import-card"
 import { transactions as transactionSchema } from "@/db/schema"
 import { useSelectAccount } from "@/features/accounts/hooks/use-select-account"
 import { toast } from "sonner"
+import { useBulkCreateTransactions } from "@/features/transactions/api/use-bulk-create-transactions"
 
 
 enum VARIANTS {
@@ -37,6 +38,7 @@ const TransactionsPage = () => {
     const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS)
 
     const newTransaction = useNewTransaction()
+    const createTransactions = useBulkCreateTransactions()
     const transactionQuery = useGetTransactions()
     const deleteTransactions = useBulkDeleteTransactions()
     const transactions = transactionQuery.data || []
@@ -64,6 +66,12 @@ const TransactionsPage = () => {
             ...value,
             accountId: accountId as string
         }))
+
+        createTransactions.mutate(data, {
+            onSuccess: () => {
+                onCancelImport()
+            }
+        })
     }
 
     if(transactionQuery.isLoading){
