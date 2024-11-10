@@ -18,6 +18,7 @@ enum VARIANTS {
     IMPORT = "IMPORT"
 }
 
+// from docs of react-papaparse, that's how the data is returned
 const INITIAL_IMPORT_RESULTS = {
     data: [],
     errors: [],

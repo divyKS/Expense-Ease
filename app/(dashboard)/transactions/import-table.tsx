@@ -1,4 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table'
+import { TableHeadSelect } from './table-head-select'
 
 // import { TableHeadSelect } from './table-head-select'
 
@@ -18,12 +19,12 @@ export const ImportTable = ({ headers, body, onTableHeadSelectChange, selectedCo
 					<TableRow>
 						{headers.map((_header, index) => (
 							<TableHead key={index}>
-                                {index}
-								{/* <TableHeadSelect
+                                {/* {index} */}
+								<TableHeadSelect
 									columnIndex={index}
 									selectedColumns={selectedColumns}
 									onChange={onTableHeadSelectChange}
-								/> */}
+								/>
 							</TableHead>
 						))}
 					</TableRow>
