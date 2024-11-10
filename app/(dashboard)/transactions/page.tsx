@@ -12,6 +12,8 @@ import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-
 import { useState } from "react"
 import { UploadButton } from "./upload-button"
 import { ImportCard } from "./import-card"
+import { transactions as transactionSchema } from "@/db/schema"
+
 
 enum VARIANTS {
     LIST = "LIST",
@@ -36,7 +38,7 @@ const TransactionsPage = () => {
     const transactions = transactionQuery.data || []
 
     const isDisabled = transactionQuery.isLoading || deleteTransactions.isPending
-
+    
     const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
         console.log(results) // a matrix of string[][] with data, error, meta field - papaparse thing
         setImportResults(results)
@@ -46,6 +48,10 @@ const TransactionsPage = () => {
     const onCancelImport = () => {
         setImportResults(INITIAL_IMPORT_RESULTS)
         setVariant(VARIANTS.LIST)
+    }
+
+    const onSubmitImport = async (values: typeof transactionSchema.$inferInsert[]) => {
+        
     }
 
     if(transactionQuery.isLoading){
@@ -72,7 +78,7 @@ const TransactionsPage = () => {
                 <ImportCard
                   data={importResults.data}
                   onCancel={onCancelImport}
-                  onSubmit={() => {}}
+                  onSubmit={onSubmitImport}
                 />
             </>
         )
