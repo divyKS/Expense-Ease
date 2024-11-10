@@ -52,58 +52,62 @@ export const ImportCard = ({ data, onCancel, onSubmit }: ImportCardProps) => {
 
 	const progress = Object.values(selectedColumns).filter(Boolean).length
 
-	// const handleContinue = () => {
-	// 	const getColumnIndex = (column: string) => {
-	// 		return column.split('_')[1]
-	// 	}
+	const handleContinue = () => {
+		// atm we have all the data as string, we need it to be of certain type for storing in our db, /bulk-create in transaction routes
+		const getColumnIndex = (column: string) => {
+			return column.split('_')[1]
+		}
 
-	// 	// map headers and body to the selected fields and set non-selected fields to null.
-	// 	const mappedData = {
-	// 		headers: headers.map((_header, index) => {
-	// 			const columnIndex = getColumnIndex(`column_${index}`)
+		// atm we have a big grid of data
+		// first we want to convert it to {headers:[null, null, "date", null ], body:[[null,null,12-2-23,null...], [null,null,12,3,43,null...], [null,null,12-2-24,null...], []]}
+		// map headers and body to the selected fields and set non-selected fields to null.
+		const mappedData = {
+			headers: headers.map((_header, index) => {
+				const columnIndex = getColumnIndex(`column_${index}`)
 
-	// 			return selectedColumns[`column_${columnIndex}`] || null
-	// 		}),
-	// 		body: body
-	// 			.map((row) => {
-	// 				const transformedRow = row.map((cell, index) => {
-	// 					const columnIndex = getColumnIndex(`column_${index}`)
+				return selectedColumns[`column_${columnIndex}`] || null
+			}),
+			body: body.map((row) => {
+					const transformedRow = row.map((cell, index) => {
+						const columnIndex = getColumnIndex(`column_${index}`)
 
-	// 					return selectedColumns[`column_${columnIndex}`]
-	// 						? cell
-	// 						: null
-	// 				})
+						return selectedColumns[`column_${columnIndex}`] ? cell : null
+					})
+					return transformedRow.every((item) => item === null) ? [] : transformedRow
+				}).filter((row) => row.length > 0),
+		}
 
-	// 				return transformedRow.every((item) => item === null)
-	// 					? []
-	// 					: transformedRow
-	// 			})
-	// 			.filter((row) => row.length > 0),
-	// 	}
+		// console.log({mappedData})
 
 		// convert it to array of objects so that it can be inserted into database.
-		// const arrayOfData = mappedData.body.map((row) => {
-		// 	return row.reduce((acc: any, cell, index) => {
-		// 		const header = mappedData.headers[index]
+		const arrayOfData = mappedData.body.map((row) => {
+			return row.reduce((acc: any, cell, index) => {
+				const header = mappedData.headers[index]
 
-		// 		if (header !== null) acc[header] = cell
+				if (header !== null) acc[header] = cell
 
-		// 		return acc
-		// 	}, {})
-		// })
+				return acc
+			}, {})
+		})
+
+		// [{amount: "34", date: "23-34-2", payee:"shop"}, {amount: "34", date: "23-34-2", payee:"shop"}, {amount: "34", date: "23-34-2", payee:"shop"},...]
+		// console.log({arrayOfData})
+
 
 		// format currency and date to match it with database
-	// 	const formattedData = arrayOfData.map((item) => ({
-	// 		...item,
-	// 		amount: convertAmountToMilliunits(parseFloat(item.amount)),
-	// 		date: format(
-	// 			parse(item.date, dateFormat, new Date()),
-	// 			outputFormat
-	// 		),
-	// 	}))
+		const formattedData = arrayOfData.map((item) => ({
+			...item,
+			amount: convertAmountToMilliunits(parseFloat(item.amount)),
+			date: format(
+				parse(item.date, dateFormat, new Date()),
+				outputFormat
+			),
+		}))
 
-	// 	onSubmit(formattedData)
-	// }
+		// console.log({formattedData})
+
+		onSubmit(formattedData)
+	}
 
 	return (
 		<div className="mx-auto -mt-6 w-full max-w-screen-2xl pb-10">
@@ -125,8 +129,8 @@ export const ImportCard = ({ data, onCancel, onSubmit }: ImportCardProps) => {
 						<Button
 							size="sm"
 							disabled={progress < requiredOptions.length}
-							// onClick={handleContinue}
-							onClick={()=>{}}
+							onClick={handleContinue}
+							// onClick={()=>{}}
 							className="w-full lg:w-auto"
 						>
 							Continue ({progress}/{requiredOptions.length})
