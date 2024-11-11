@@ -1,9 +1,12 @@
-'use client'
+import { DataGrid } from "@/components/DataGrid"
 
-export default function Home() {    
-    return (
-        <>
-            <p>This is your dashboard, this is protected</p>
-        </>
-    )
+const DashboardPage = () => {
+  return (
+    <div className="mx-auto -mt-6 w-full max-w-screen-2xl pb-10">
+      <DataGrid />
+
+    </div>
+  )
 }
+
+export default DashboardPage
