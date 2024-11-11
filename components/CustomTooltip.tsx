@@ -46,6 +46,7 @@ export const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
 
                     <p className="text-right text-sm font-medium">
                         {formatCurrency(expenses * -1)}
+                        {/* -1 since we made everything ABS for the carts representation */}
                     </p>
                 </div>
             </div>
