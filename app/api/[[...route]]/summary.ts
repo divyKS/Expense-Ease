@@ -101,7 +101,7 @@ const app = new Hono().get(
             .select({
                 date: transactions.date,
                 income: sql`SUM(CASE WHEN ${transactions.amount} >= 0 THEN ${transactions.amount} ELSE 0 END)`.mapWith(Number),
-                expenses: sql`SUM(CASE WHEN ${transactions.amount} < 0 THEN ABS(${transactions.amount}) ELSE 0 END)`.mapWith(Number),
+                expenses: sql`SUM(CASE WHEN ${transactions.amount} < 0 THEN ABS(${transactions.amount}) ELSE 0 END)`.mapWith(Number), // ABS for the charts library, otherwise the expenses are seen on the -y axiss
             })
             .from(transactions)
             .innerJoin(accounts, eq(transactions.accountId, accounts.id))
