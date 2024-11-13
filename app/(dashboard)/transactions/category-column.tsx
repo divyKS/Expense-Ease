@@ -1,27 +1,28 @@
-import { TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react"
 
-import { useOpenCategory } from "@/features/categories/hooks/use-open-category";
-import { cn } from "@/lib/utils";
-import { useOpenTransaction } from "@/features/transactions/hooks/use-open-transaction";
+import { useOpenCategory } from "@/features/categories/hooks/use-open-category"
+import { cn } from "@/lib/utils"
+import { useOpenTransaction } from "@/features/transactions/hooks/use-open-transaction"
 
 type CategoryColumnProps = {
-  id: string;
-  category: string | null;
-  categoryId: string | null;
-};
+  id: string,
+  category: string | null,
+  categoryId: string | null
+}
 
-export const CategoryColumn = ({
-  id,
-  category,
-  categoryId,
-}: CategoryColumnProps) => {
-  const { onOpen: onOpenCategory } = useOpenCategory();
-  const { onOpen: onOpenTransaction } = useOpenTransaction();
+export const CategoryColumn = ({ id, category, categoryId }: CategoryColumnProps) => {
+
+  // console.log(id)
+  // console.log(category)
+  // console.log(categoryId)
+
+  const { onOpen: onOpenCategory } = useOpenCategory()
+  const { onOpen: onOpenTransaction } = useOpenTransaction()
 
   const onClick = () => {
-    if (categoryId) onOpenCategory(categoryId);
-    else onOpenTransaction(id);
-  };
+    if (categoryId) onOpenCategory(categoryId)
+    else onOpenTransaction(id)
+  }
 
   return (
     <button
@@ -34,5 +35,5 @@ export const CategoryColumn = ({
       {!category && <TriangleAlert className="mr-2 size-4 shrink-0" />}
       {category || "Uncategorized"}
     </button>
-  );
-};
+  )
+}

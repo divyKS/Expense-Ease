@@ -9,7 +9,7 @@ import { columns } from "./columns"
 import { useNewTransaction } from "@/features/transactions/hooks/use-new-transaction"
 import { useGetTransactions } from "@/features/transactions/api/use-get-transactions"
 import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { UploadButton } from "./upload-button"
 import { ImportCard } from "./import-card"
 import { transactions as transactionSchema } from "@/db/schema"
@@ -73,6 +73,12 @@ const TransactionsPage = () => {
             }
         })
     }
+
+    // useEffect(() => {
+    //     if(transactions.length){
+    //         console.log(transactions)
+    //     }
+    // }, [transactions])
 
     if(transactionQuery.isLoading){
         return (

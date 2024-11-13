@@ -1,28 +1,17 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Trash } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Trash } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-// import { AmountInput } from '@/components/amount-input';
-// import { DatePicker } from '@/components/date-picker';
-import { Button } from '@/components/ui/button';
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-// import { Textarea } from '@/components/ui/textarea';
-import { insertTransactionSchema } from '@/db/schema';
-import { Select } from '@/components/Select';
-import { DatePicker } from '@/components/DatePicker';
-import { Textarea } from '@/components/ui/textarea';
-import { AmountInput } from '@/components/AmountInput';
-import { convertAmountToMilliunits } from '@/lib/utils';
-// import { convertAmountToMilliunits } from '@/lib/utils';
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { insertTransactionSchema } from '@/db/schema'
+import { Select } from '@/components/Select'
+import { DatePicker } from '@/components/DatePicker'
+import { Textarea } from '@/components/ui/textarea'
+import { AmountInput } from '@/components/AmountInput'
+import { convertAmountToMilliunits } from '@/lib/utils'
 
 const formSchema = z.object({
 	date: z.coerce.date(),
@@ -31,58 +20,48 @@ const formSchema = z.object({
 	payee: z.string(),
 	amount: z.string(),
 	notes: z.string().nullable().optional(),
-});
+})
 
 const apiSchema = insertTransactionSchema.omit({
 	id: true,
-});
+})
 
-type FormValues = z.input<typeof formSchema>;
-type ApiFormValues = z.input<typeof apiSchema>;
+type FormValues = z.input<typeof formSchema>
+type ApiFormValues = z.input<typeof apiSchema>
 
 type TransactionFormProps = {
-	id?: string;
-	defaultValues?: FormValues;
-	onSubmit: (values: ApiFormValues) => void;
-	onDelete?: () => void;
-	disabled?: boolean;
-	accountOptions: { label: string; value: string }[];
-	categoryOptions: { label: string; value: string }[];
-	onCreateAccount: (name: string) => void;
-	onCreateCategory: (name: string) => void;
-};
+	id?: string,
+	defaultValues?: FormValues,
+	onSubmit: (values: ApiFormValues) => void,
+	onDelete?: () => void,
+	disabled?: boolean,
+	accountOptions: { label: string, value: string }[],
+	categoryOptions: { label: string, value: string }[],
+	onCreateAccount: (name: string) => void,
+	onCreateCategory: (name: string) => void,
+}
 
-export const TransactionForm = ({
-	id,
-	defaultValues,
-	onSubmit,
-	onDelete,
-	disabled,
-	accountOptions,
-	categoryOptions,
-	onCreateAccount,
-	onCreateCategory,
-}: TransactionFormProps) => {
+export const TransactionForm = ({ id, defaultValues, onSubmit, onDelete, disabled, accountOptions, categoryOptions, onCreateAccount, onCreateCategory, }: TransactionFormProps) => {
     
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues,
-	});
+	})
 
 	const handleSubmit = (values: FormValues) => {
-        // console.log(values);
-		const amount = parseFloat(values.amount);
-		const amountInMilliunits = convertAmountToMilliunits(amount);
+        // console.log(values)
+		const amount = parseFloat(values.amount)
+		const amountInMilliunits = convertAmountToMilliunits(amount)
 
 		onSubmit({
 			...values,
 			amount: amountInMilliunits,
-		});
-	};
+		})
+	}
 
 	const handleDelete = () => {
-		onDelete?.();
-	};
+		onDelete?.()
+	}
 
 	return (
 		<Form {...form}>
@@ -241,5 +220,5 @@ export const TransactionForm = ({
 				)}
 			</form>
 		</Form>
-	);
-};
+	)
+}

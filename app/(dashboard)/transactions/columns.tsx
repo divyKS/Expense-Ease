@@ -72,6 +72,7 @@ export const columns: ColumnDef<ResponseType>[] = [
       );
     },
     cell: ({ row }) => {
+      // console.log(row)
       return (
         <CategoryColumn
           id={row.original.id}
@@ -141,6 +142,20 @@ export const columns: ColumnDef<ResponseType>[] = [
           accountId={row.original.accountId}          
         />
       )
+    },
+  },
+  {
+    accessorKey: "notes",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Notes
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
   },
   {
