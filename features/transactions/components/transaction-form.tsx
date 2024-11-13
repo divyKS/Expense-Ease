@@ -12,6 +12,7 @@ import { DatePicker } from '@/components/DatePicker'
 import { Textarea } from '@/components/ui/textarea'
 import { AmountInput } from '@/components/AmountInput'
 import { convertAmountToMilliunits } from '@/lib/utils'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const formSchema = z.object({
 	date: z.coerce.date(),
@@ -20,6 +21,8 @@ const formSchema = z.object({
 	payee: z.string(),
 	amount: z.string(),
 	notes: z.string().nullable().optional(),
+	// recurring: z.boolean().optional()
+	recurring: z.boolean().default(false)
 })
 
 const apiSchema = insertTransactionSchema.omit({
@@ -27,7 +30,7 @@ const apiSchema = insertTransactionSchema.omit({
 })
 
 type FormValues = z.input<typeof formSchema>
-type ApiFormValues = z.input<typeof apiSchema>
+type ApiFormValues = z.input<typeof apiSchema> & { recurring: boolean }
 
 type TransactionFormProps = {
 	id?: string,
@@ -45,7 +48,10 @@ export const TransactionForm = ({ id, defaultValues, onSubmit, onDelete, disable
     
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
-		defaultValues,
+		defaultValues: {
+			...defaultValues,
+			recurring: defaultValues?.recurring ?? false
+		},
 	})
 
 	const handleSubmit = (values: FormValues) => {
@@ -55,6 +61,7 @@ export const TransactionForm = ({ id, defaultValues, onSubmit, onDelete, disable
 
 		onSubmit({
 			...values,
+			recurring: values.recurring ?? false,
 			amount: amountInMilliunits,
 		})
 	}
@@ -197,6 +204,35 @@ export const TransactionForm = ({ id, defaultValues, onSubmit, onDelete, disable
 								/>
 							</FormControl>
 
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					name="recurring"
+					control={form.control}
+					render={({ field }) => (
+						<FormItem>
+							{/* <FormLabel>Recurring Expense</FormLabel> */}
+							<FormControl>
+							<div className="items-top flex space-x-2">
+								<Checkbox
+									id='recurring'
+									checked={field.value ?? false}  // Set `checked` based on field value
+									onCheckedChange={field.onChange} // Update field value on change
+									disabled={disabled}
+								/>
+								<div className="grid gap-1.5 leading-none">
+									<label
+										htmlFor="terms1"
+										className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+									>
+										Recurring Expense
+									</label>
+								</div>
+							</div>
+							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}

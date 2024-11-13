@@ -67,6 +67,13 @@ const TransactionsPage = () => {
             accountId: accountId as string
         }))
 
+        console.log(data)
+
+        // accountId: "account_2"
+        // amount: -13270
+        // date: "2024-01-08"
+        // payee: "Shop"
+
         createTransactions.mutate(data, {
             onSuccess: () => {
                 onCancelImport()

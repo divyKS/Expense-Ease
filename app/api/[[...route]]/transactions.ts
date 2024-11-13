@@ -167,6 +167,8 @@ const app = new Hono()
 				return c.json({ error: 'Unauthorized.' }, 401)
 			}
 
+			// console.log(values)
+
 			const data = await db
 				.insert(transactions)
 				.values(
@@ -176,6 +178,8 @@ const app = new Hono()
 					}))
 				)
 				.returning()
+			
+			// console.log({data})
 
 			return c.json({ data })
 		}
