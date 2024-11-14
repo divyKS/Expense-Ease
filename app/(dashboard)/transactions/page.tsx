@@ -16,6 +16,7 @@ import { transactions as transactionSchema } from "@/db/schema"
 import { useSelectAccount } from "@/features/accounts/hooks/use-select-account"
 import { toast } from "sonner"
 import { useBulkCreateTransactions } from "@/features/transactions/api/use-bulk-create-transactions"
+import { UploadBill } from "./upload-bill"
 
 
 enum VARIANTS {
@@ -81,6 +82,34 @@ const TransactionsPage = () => {
         })
     }
 
+    const onUploadFileToExtract = async (file: File | null) => {
+        if(file){
+            console.log(file)
+            const formData = new FormData()
+            formData.append("file", file)
+
+            try {
+                const response = await fetch('http://localhost:3500/api/extract', {
+                    method: 'POST',
+                    body: formData,
+                })
+    
+                if (!response.ok) {
+                    throw new Error('File upload failed')
+                }
+    
+                const result = await response.json()
+                console.log('File upload success:', result)
+                onUpload(result)
+
+            } catch (error) {
+                console.error('Error uploading file:', error)
+            }
+        } else {
+            console.error('No pdf/image selected')
+        }
+    }
+
     // useEffect(() => {
     //     if(transactions.length){
     //         console.log(transactions)
@@ -127,6 +156,7 @@ const TransactionsPage = () => {
                             <Plus className="mr-2 size-4" /> Add new
                         </Button>
                         <UploadButton onUpload={onUpload} />
+                        <UploadBill onFileChange={onUploadFileToExtract} />
                     </div>
                 </CardHeader>
                 <CardContent>

@@ -179,7 +179,8 @@ const app = new Hono()
 				)
 				.returning()
 			
-			// console.log({data})
+			// console.log({data}) 
+			// TODO: see here for the cancelling recurring payments, this return can be used to have to id's of the transactions, then those can be stored with their dates, on cancelling the transactions that belong to recurring transaction db? would be removed which are ahead of the current date
 
 			return c.json({ data })
 		}
