@@ -27,6 +27,10 @@ const routes = [
       label: "Categories",
     },
     {
+      href: "/split",
+      label: "Split",
+    },
+    {
       href: "/settings",
       label: "Settings",
     },
