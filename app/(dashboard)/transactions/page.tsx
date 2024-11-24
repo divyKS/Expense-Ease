@@ -84,12 +84,15 @@ const TransactionsPage = () => {
 
     const onUploadFileToExtract = async (file: File | null) => {
         if(file){
+            console.log("file exists")
             console.log(file)
             const formData = new FormData()
             formData.append("file", file)
+            console.log("file in form data format")
+            console.log(formData)
 
             try {
-                const response = await fetch('http://localhost:3500/api/extract', {
+                const response = await fetch('http://localhost:5000/api/extract', {
                     method: 'POST',
                     body: formData,
                 })
