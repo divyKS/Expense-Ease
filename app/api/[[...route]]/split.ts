@@ -8,34 +8,15 @@ import { groupMembers, groups, split_transactions, splits, users } from "@/db/sc
 import { eq, and } from 'drizzle-orm'
 
 const app = new Hono()
-  // get group members
-  .get("/:groupId",
-    clerkMiddleware(),
-    async (c) => {
-      const auth = getAuth(c);
-
-      if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
-
-      const groupId = parseInt(c.req.param("groupId"));
-
-      if (isNaN(groupId)) {
-        return c.json({ error: "Invalid group ID" }, 400);
-      }
-
-      const members = await db
-        .select({
-          user_id: groupMembers.user_id,
-          name: users.name,
-        })
-        .from(groupMembers)
-        .innerJoin(users, eq(users.user_id, groupMembers.user_id))
-        .where(eq(groupMembers.group_id, groupId));
-
-      return c.json({ members });
-    }
-  )
+.get('/groups', async (c) => {
+  try {
+    const allGroups = await db.select().from(groups)
+    return c.json(allGroups)
+  } catch (error) {
+    console.error('Error fetching groups:', error)
+    return c.json({ error: 'Failed to fetch groups' }, 500)
+  }
+})
   .post('/create-user',
     clerkMiddleware(),
     zValidator("json", z.object({ name: z.string().min(1, "Name is required") })),
@@ -66,6 +47,34 @@ const app = new Hono()
       if (!userList) return c.json({ error: "Users not found." }, 404)
 
       return c.json(userList, 200)
+    }
+  )
+  // get group members
+  .get("/:groupId",
+    clerkMiddleware(),
+    async (c) => {
+      const auth = getAuth(c);
+
+      if (!auth?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const groupId = parseInt(c.req.param("groupId"));
+
+      if (isNaN(groupId)) {
+        return c.json({ error: "Invalid group ID" }, 400);
+      }
+
+      const members = await db
+        .select({
+          user_id: groupMembers.user_id,
+          name: users.name,
+        })
+        .from(groupMembers)
+        .innerJoin(users, eq(users.user_id, groupMembers.user_id))
+        .where(eq(groupMembers.group_id, groupId));
+
+      return c.json({ members });
     }
   )
   .post("/create-group",
@@ -349,6 +358,7 @@ const app = new Hono()
       }
     }
   )
+  
 
 
 export default app
