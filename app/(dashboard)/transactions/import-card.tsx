@@ -53,6 +53,7 @@ export const ImportCard = ({ data, onCancel, onSubmit }: ImportCardProps) => {
 	const progress = Object.values(selectedColumns).filter(Boolean).length
 
 	const handleContinue = () => {
+		console.log("bhunesh to help kareaga")
 		// atm we have all the data as string, we need it to be of certain type for storing in our db, /bulk-create in transaction routes
 		const getColumnIndex = (column: string) => {
 			return column.split('_')[1]
@@ -91,7 +92,8 @@ export const ImportCard = ({ data, onCancel, onSubmit }: ImportCardProps) => {
 		})
 
 		// [{amount: "34", date: "23-34-2", payee:"shop"}, {amount: "34", date: "23-34-2", payee:"shop"}, {amount: "34", date: "23-34-2", payee:"shop"},...]
-		// console.log({arrayOfData})
+		console.log("harshal helps with prime")
+		console.log({arrayOfData})
 
 
 		// format currency and date to match it with database

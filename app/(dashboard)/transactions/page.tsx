@@ -47,6 +47,7 @@ const TransactionsPage = () => {
     const isDisabled = transactionQuery.isLoading || deleteTransactions.isPending
     
     const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
+        console.log("yaha to mai hu")
         console.log(results) // a matrix of string[][] with data, error, meta field - papaparse thing
         setImportResults(results)
         setVariant(VARIANTS.IMPORT)
@@ -103,6 +104,9 @@ const TransactionsPage = () => {
     
                 const result = await response.json()
                 console.log('File upload success:', result)
+
+                // result
+                
                 onUpload(result)
 
             } catch (error) {
